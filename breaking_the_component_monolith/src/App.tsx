@@ -9,7 +9,7 @@ interface AppProps {
 function App({ businessName, discountRate }: AppProps) {
   // One branch
   const hasSpecialRate = ["Nandos", "McDonalds"].includes(
-    businessName as string
+    businessName as string,
   );
 
   let businessRate: number | undefined = undefined;
@@ -36,13 +36,13 @@ function App({ businessName, discountRate }: AppProps) {
   return (
     <>
       <h1>Business Name</h1>
-      <div className="card">{businessName}</div>
+      <div data-testId="card">{businessName}</div>
       <h2>Business Rate</h2>
-      <div className="card">{businessRate}</div>
+      <div data-testId="card">{businessRate}</div>
       <button onClick={() => setRevealOffer(true)}>Reveal Offer</button>
       {revealOffer &&
         hasSpecialRate && ( // Two branches
-          <div className="offer">You have a special business offer!</div>
+          <div data-testId="offer">You have a special business offer!</div>
         )}
       <div>{finalRate}</div>
     </>

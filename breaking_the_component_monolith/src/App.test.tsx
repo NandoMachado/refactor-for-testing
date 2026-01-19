@@ -16,9 +16,7 @@ describe("App", () => {
     it("renders empty business name and undefined business rate", () => {
       render(<App />);
 
-      const cards = screen
-        .getAllByRole("generic")
-        .filter((el) => el.className === "card");
+      const cards = screen.getAllByTestId("card");
       expect(cards[0]).toBeEmptyDOMElement(); // business name card
       expect(cards[1]).toBeEmptyDOMElement(); // business rate card
     });
@@ -30,7 +28,7 @@ describe("App", () => {
       await userEvent.click(button);
 
       expect(
-        screen.queryByText("You have a special business offer!")
+        screen.queryByText("You have a special business offer!"),
       ).not.toBeInTheDocument();
     });
 
@@ -38,7 +36,7 @@ describe("App", () => {
       const { container } = render(<App />);
       const divs = container.querySelectorAll("div");
       const finalRateDiv = Array.from(divs).find(
-        (div) => !div.className && div.textContent === ""
+        (div) => !div.className && div.textContent === "",
       );
       expect(finalRateDiv).toBeInTheDocument();
     });
@@ -70,14 +68,14 @@ describe("App", () => {
       render(<App businessName="Nandos" />);
 
       expect(
-        screen.queryByText("You have a special business offer!")
+        screen.queryByText("You have a special business offer!"),
       ).not.toBeInTheDocument();
 
       const button = screen.getByRole("button", { name: "Reveal Offer" });
       await userEvent.click(button);
 
       expect(
-        screen.getByText("You have a special business offer!")
+        screen.getByText("You have a special business offer!"),
       ).toBeVisible();
     });
 
@@ -85,14 +83,14 @@ describe("App", () => {
       render(<App businessName="McDonalds" />);
 
       expect(
-        screen.queryByText("You have a special business offer!")
+        screen.queryByText("You have a special business offer!"),
       ).not.toBeInTheDocument();
 
       const button = screen.getByRole("button", { name: "Reveal Offer" });
       await userEvent.click(button);
 
       expect(
-        screen.getByText("You have a special business offer!")
+        screen.getByText("You have a special business offer!"),
       ).toBeVisible();
     });
 
@@ -103,7 +101,7 @@ describe("App", () => {
       await userEvent.click(button);
 
       expect(
-        screen.queryByText("You have a special business offer!")
+        screen.queryByText("You have a special business offer!"),
       ).not.toBeInTheDocument();
     });
   });
@@ -112,9 +110,7 @@ describe("App", () => {
     it("renders empty business name and undefined rates with discountRate alone", () => {
       render(<App discountRate={10} />);
 
-      const cards = screen
-        .getAllByRole("generic")
-        .filter((el) => el.className === "card");
+      const cards = screen.getAllByTestId("card");
       expect(cards[0]).toBeEmptyDOMElement(); // business name card
       expect(cards[1]).toBeEmptyDOMElement(); // business rate card
     });
@@ -126,7 +122,7 @@ describe("App", () => {
       await userEvent.click(button);
 
       expect(
-        screen.queryByText("You have a special business offer!")
+        screen.queryByText("You have a special business offer!"),
       ).not.toBeInTheDocument();
     });
   });
@@ -187,7 +183,7 @@ describe("App", () => {
       await userEvent.click(button);
 
       expect(
-        screen.getByText("You have a special business offer!")
+        screen.getByText("You have a special business offer!"),
       ).toBeVisible();
     });
 
@@ -198,7 +194,7 @@ describe("App", () => {
       await userEvent.click(button);
 
       expect(
-        screen.getByText("You have a special business offer!")
+        screen.getByText("You have a special business offer!"),
       ).toBeVisible();
     });
 
@@ -209,7 +205,7 @@ describe("App", () => {
       await userEvent.click(button);
 
       expect(
-        screen.queryByText("You have a special business offer!")
+        screen.queryByText("You have a special business offer!"),
       ).not.toBeInTheDocument();
     });
   });
