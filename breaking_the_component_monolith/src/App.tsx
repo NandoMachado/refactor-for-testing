@@ -32,6 +32,7 @@ function App({ businessName, discountRate }: AppProps) {
       : businessRate; // One branch
 
   const [revealOffer, setRevealOffer] = useState(false);
+  const toggleOffer = () => setRevealOffer(!revealOffer);
 
   return (
     <>
@@ -39,7 +40,7 @@ function App({ businessName, discountRate }: AppProps) {
       <div data-testId="card">{businessName}</div>
       <h2>Business Rate</h2>
       <div data-testId="card">{businessRate}</div>
-      <button onClick={() => setRevealOffer(true)}>Reveal Offer</button>
+      <button onClick={toggleOffer}>Reveal Offer</button>
       {revealOffer &&
         hasSpecialRate && ( // Two branches
           <div data-testId="offer">You have a special business offer!</div>

@@ -1,73 +1,70 @@
-# React + TypeScript + Vite
+# Breaking the mammoth component
+#### (for better testing and a longer, happier life)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Intro
+`App.ts` is a small component. It's logic is very simple: it receives two optional parameters, does some logic based on them, and has one button for the user to reveal or hide a field.
 
-Currently, two official plugins are available:
+It also has other fields: it renders two static titles (Business Name and Business Rate), each followed by their respective dynamic value.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+However, `App.ts` is not as innocent as it seems! It needs a longish test file that has to handle tests for both what the user sees, as well as logic that happens behind the scenes.
 
-## React Compiler
+#### But isn't this ok?!? It's still a small test file...
+Guess what? Now the business wants a feature flag: if it's set to true, then the button to reveal the hidden component triggers a Hello, Kitty! animation instead!
+![alt text](image.png)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```
+{revealOffer &&
+  hasSpecialRate && 
+  !hasHelloKittyFlag && (
+    <div data-testId="offer">You have a special business offer!</div>
+)}
+```
+The business likes that! But only if the user is external, otherwise Sainsbury's employees might get happy.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+{revealOffer &&
+  hasSpecialRate && 
+  !hasHelloKittyFlag && 
+  !isInternal && (
+    <div data-testId="offer">You have a special business offer!</div>
+)}
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+How are those tests going? 
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+If you keep all of this logic in the same place, you now have to combine testing each of these permutations alongside the render logic when, in fact, that logic resolves to a single `true` or `false`.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+const showShowOffer = revealOffer &&
+  hasSpecialRate && 
+  !hasHelloKittyFlag && 
+  !isInternal
+
+...
+
+{showShowOffer && (
+    <div data-testId="offer">You have a special business offer!</div>
+)}
+```
+
+This is tidier, but it doesn't change your test efforts: you still need to test for every permutation there.
+
+#### So what do I do?
+How about extracting that piece of logic to a separate file, write all permutation using only simple unit tests, without worrying about the rendering logic? 
+
+You'll still need to test the different behaviors in the render tests, but now you'll only have a `true` and a `false` to cover instead of all permutations.
+
+## TASK
+Extract the business logic in `App.ts` into separate helper files, writing tests for each.
+
+For each of the business logic extracted, think about:
+1. What are you going to name the files?
+2. Where are you going to put them (folder structure)?
+3. Which existing tests should I remove now that that logic is being tested elsewhere?
+4. Does your file need to have an `.tsx` extension?
+
+## Running tests
+`npm run test src/yourTestFileName.ts`
+
+#### Motivation
+We have a testing issue. Caused by code-writing issues. And it sucks.
