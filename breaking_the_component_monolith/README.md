@@ -61,6 +61,7 @@ For each of the business logic extracted, think about:
 2. Where are you going to put them (folder structure)?
 3. Which existing tests should I remove now that that logic is being tested elsewhere?
 4. Does your file need to have an `.tsx` extension?
+5. Can / should I use `it.each` / `describe.each`?
 
 ## Running tests 🧪
 `npm run test src/yourTestFileName.ts`
