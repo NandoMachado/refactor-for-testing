@@ -8,7 +8,7 @@ It also has other fields: it renders two static titles (Business Name and Busine
 
 However, `App.ts` is not as innocent as it seems! It needs a longish test file that has to handle tests for both what the user sees, as well as logic that happens behind the scenes.
 
-#### But isn't this ok?!? It's still a small test file... ⁉️
+### But isn't this ok?!? It's still a small test file... ⁉️
 Guess what? Now the business wants a feature flag: if it's set to true, then the button to reveal the hidden component triggers a Hello, Kitty! animation instead! 😽❤️
 
 ```
@@ -48,7 +48,7 @@ const showShowOffer = revealOffer &&
 
 This is tidier, but it doesn't change your test efforts: you still need to test for every permutation there.
 
-#### So what do I do? 🤔
+### So what do I do? 🤔
 How about extracting that piece of logic to a separate file, write all permutation using only simple unit tests, without worrying about the rendering logic? 
 
 You'll still need to test the different behaviors in the render tests, but now you'll only have a `true` and a `false` to cover instead of all permutations.
